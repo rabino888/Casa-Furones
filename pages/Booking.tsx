@@ -55,7 +55,7 @@ const Booking: React.FC = () => {
               <h3 className="text-xl font-bold mb-4 serif">¿Necesitas Ayuda?</h3>
               <p className="text-white/80 mb-6">Estamos disponibles para resolver cualquier duda sobre tu reserva por WhatsApp o email.</p>
               <a 
-                href="https://wa.me/34600000000" 
+                href="https://wa.me/34695646507" 
                 target="_blank" 
                 rel="noreferrer"
                 className="block w-full text-center bg-white text-[#4A5D4E] py-3 rounded-full font-bold hover:bg-white/90 transition-all"
