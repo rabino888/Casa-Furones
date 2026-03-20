@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Calendar, Users, CheckCircle, ShieldCheck, Zap, MessageSquare } from 'lucide-react';
+import { Calendar, Users, CheckCircle, ShieldCheck, Zap, MessageSquare, Instagram, Facebook } from 'lucide-react';
 
 const Booking: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,12 +13,35 @@ const Booking: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would integrate with a booking API or Ical
-    console.log('Booking request:', formData);
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Error al enviar la reserva');
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error('Booking request error:', err);
+      setError(err.message || 'Ocurrió un error inesperado. Por favor, inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,10 +81,30 @@ const Booking: React.FC = () => {
                 href="https://wa.me/34695646507" 
                 target="_blank" 
                 rel="noreferrer"
-                className="block w-full text-center bg-white text-[#4A5D4E] py-3 rounded-full font-bold hover:bg-white/90 transition-all"
+                className="block w-full text-center bg-white text-[#4A5D4E] py-3 rounded-full font-bold hover:bg-white/90 transition-all mb-6"
               >
                 Chat por WhatsApp
               </a>
+              <div className="flex justify-center gap-4 border-t border-white/10 pt-6">
+                <a 
+                  href="https://www.instagram.com/casarural.furones/" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+                >
+                  <Instagram size={20} />
+                  <span className="text-sm">Instagram</span>
+                </a>
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61578333865894" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
+                >
+                  <Facebook size={20} />
+                  <span className="text-sm">Facebook</span>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -148,11 +191,18 @@ const Booking: React.FC = () => {
                     ></textarea>
                   </div>
 
+                  {error && (
+                    <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+                      {error}
+                    </div>
+                  )}
+
                   <button 
                     type="submit"
-                    className="w-full py-6 bg-[#4A5D4E] text-white rounded-2xl text-xl font-bold shadow-lg hover:bg-[#3D4D40] hover:shadow-2xl transition-all transform hover:-translate-y-1"
+                    disabled={loading}
+                    className={`w-full py-6 bg-[#4A5D4E] text-white rounded-2xl text-xl font-bold shadow-lg hover:bg-[#3D4D40] hover:shadow-2xl transition-all transform hover:-translate-y-1 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                   >
-                    Verificar Disponibilidad y Reservar
+                    {loading ? 'Enviando...' : 'Verificar Disponibilidad y Reservar'}
                   </button>
                   <p className="text-center text-gray-400 text-sm">
                     Al pulsar en reservar, nuestro equipo se pondrá en contacto contigo en menos de 2 horas.

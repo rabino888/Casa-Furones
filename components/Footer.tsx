@@ -16,10 +16,22 @@ const Footer: React.FC = () => {
               {t('footer_desc')}
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
+              <a 
+                href="https://www.instagram.com/casarural.furones/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Instagram"
+              >
                 <Instagram size={20} />
               </a>
-              <a href="#" className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
+              <a 
+                href="https://www.facebook.com/profile.php?id=61578333865894" 
+                target="_blank" 
+                rel="noreferrer"
+                className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Facebook"
+              >
                 <Facebook size={20} />
               </a>
             </div>
